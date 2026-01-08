@@ -5,22 +5,28 @@ import { getAppointments, updateAppointment } from "../api/appointmentApi"
 export default function MyAppointments() {
     const [appointments, setAppointments] = useState([])
     const [count, setCount] = useState(0);
-
+    const [filter, setFilter] = useState("")
 
     useEffect(() => {
-        load()
+        const fetchData = async () => {
+            const res = await getAppointments()
+            // wrap state updates in setTimeout 0
+            setTimeout(() => {
+                setCount(res.data.count)
+                setAppointments(res.data.appointments)
+            }, 0)
+        }
+
+        fetchData()
     }, [])
 
-    const load = async () => {
-        const res = await getAppointments()
-        setCount(res.data.count);
-        setAppointments(res.data.appointments)
-    }
+    const filtered = filter
+        ? appointments.filter(a => a.status === filter)
+        : appointments
 
     const handleStatusUpdate = async (id, status) => {
         try {
             await updateAppointment(id, status);
-            load(); // reload appointments
         } catch (err) {
             console.error(err.response?.data?.message || err.message);
         }
@@ -60,7 +66,7 @@ export default function MyAppointments() {
                     </div>
 
                     <div className="space-y-6">
-                        {appointments.map((patient) => (
+                        {filtered.map((patient) => (
                             <div
                                 key={patient._id}
                                 className="border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition bg-gradient-to-r from-white to-blue-50"

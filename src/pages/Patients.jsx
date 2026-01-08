@@ -5,14 +5,19 @@ export default function Patients() {
     const [users, setUsers] = useState([])
     const [search, setSearch] = useState("")
 
-    useEffect(() => {
-        fetchPatients()
-    }, [])
 
-    const fetchPatients = async () => {
-        const res = await getPatients();
-        setUsers(res.data.users);
-    };
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const res = await getPatients();
+                setUsers(res.data.users); // safe to call here
+            } catch (err) {
+                console.error("Failed to fetch patients:", err);
+            }
+        };
+
+        fetchPatients(); // call the async function
+    }, []);
 
     const filtered = users.filter(u =>
         u.phone?.toLowerCase().includes(search.toLowerCase())
@@ -21,7 +26,6 @@ export default function Patients() {
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this patient?")) return
         await deleteUser(id)
-        fetchPatients()
     }
 
 
@@ -37,7 +41,7 @@ export default function Patients() {
                 <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                     <input
                         type="text"
-                        placeholder="Search Doctor's Name and Specialty ..."
+                        placeholder="Search Patient's Contact Number ..."
                         className="border border-cyan-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 px-4 py-2 rounded-lg shadow-sm w-full md:w-1/3 transition"
                         onChange={(e) => setSearch(e.target.value)}
                     />

@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Star } from "lucide-react";
 import { getDoctors } from "../api/doctorApi";
 import { bookAppointment } from "../api/appointmentApi";
-import { useAuth } from "../context/AuthContext";
 
 const BookAppointment = () => {
     const { doctorId } = useParams();
@@ -39,24 +38,24 @@ const BookAppointment = () => {
 
     // Update available slots when doctor changes
     useEffect(() => {
-        setSelectedTime('');
-        if (!selectedDoctor) {
-            setAvailableSlots([]);
-            return;
-        }
+        setTimeout(() => {
+            setSelectedTime('');
+            if (!selectedDoctor) {
+                setAvailableSlots([]);
+                return;
+            }
 
-        const doctor = doctors.find(d => d._id === selectedDoctor);
-        if (!doctor) return;
+            const doctor = doctors.find(d => d._id === selectedDoctor);
+            if (!doctor) return;
 
-        // Flatten day + slot
-        const slots = doctor.availableSlots.flatMap(slotObj =>
-            slotObj.slots.map(time => ({
-                day: slotObj.day,
-                time
-            }))
-        );
-        setAvailableSlots(slots);
+            const slots = doctor.availableSlots.flatMap(slotObj =>
+                slotObj.slots.map(time => ({ day: slotObj.day, time }))
+            );
+            setAvailableSlots(slots);
+        }, 0);
     }, [selectedDoctor, doctors]);
+
+    
 
     const doctor = doctors.find(d => d._id === selectedDoctor);
 

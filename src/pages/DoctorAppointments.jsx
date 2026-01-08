@@ -8,19 +8,22 @@ export default function DoctorAppointments() {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        load()
+        const fetchData = async () => {
+            const res = await getAppointments()
+            // wrap state updates in setTimeout 0
+            setTimeout(() => {
+                setCount(res.data.count)
+                setAppointments(res.data.appointments)
+            }, 0)
+        }
+
+        fetchData()
     }, [])
 
-    const load = async () => {
-        const res = await getAppointments()
-        setCount(res.data.count);
-        setAppointments(res.data.appointments)
-    }
 
     const handleStatusUpdate = async (id, status) => {
         try {
             await updateAppointment(id, status);
-            load(); // reload appointments
         } catch (err) {
             console.error(err.response?.data?.message || err.message);
         }
