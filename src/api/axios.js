@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://doc-time-server.vercel.app/api'
+    //   baseURL: 'http://localhost:5000/api',
 });
 
 // Request interceptor to add token
