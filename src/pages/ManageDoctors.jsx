@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { deleteDoctor, getDoctors, updateDoctor } from "../api/doctorApi";
-import API from "../api/axios";
 
 export default function ManageDoctors() {
     const [doctors, setDoctors] = useState([]);
