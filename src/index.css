@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Optional Tailwind helper classes for cleaner look */
+.nav-link {
+    @apply text-gray-700 hover:text-blue-600 font-medium transition-all;
+}
+
+.btn-primary {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition;
+}
+
+.btn-secondary {
+    @apply border border-blue-600 text-blue-600 px-5 py-2 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition;
+}
+
+.btn-danger {
+    @apply bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition;
+}
