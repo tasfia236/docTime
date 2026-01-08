@@ -12,7 +12,7 @@ export const getProfile = () => {
 }
 
 // Delete doctor (Admin)
-export const deleteAccount = (id) => {
+export const deleteAccount = () => {
     return API.delete(`/user/account`);
 };
 
